@@ -1,0 +1,20 @@
+DROP TABLE Credentials;
+Drop Table Users;
+
+CREATE TABLE Users 
+(
+User_Id int NOT NULL,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255) NOT NULL,
+PRIMARY KEY (User_Id)
+);
+
+CREATE TABLE Credentials
+(
+Credential_Id int NOT NULL,
+Username varchar(255) NOT NULL,
+Password varchar(255) NOT NULL,
+User_Id int NOT NULL,
+PRIMARY KEY (Credential_Id),
+FOREIGN KEY (User_Id) REFERENCES Users(User_Id)
+);
