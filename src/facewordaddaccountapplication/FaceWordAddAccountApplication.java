@@ -17,7 +17,6 @@ public class FaceWordAddAccountApplication
             if(mw.isSubmitted)
             {
                 result = JOptionPane.showOptionDialog(mw, "Taco", "Confrim", 0, 0, null, args, args);
-                System.out.println("Tacos0");
             }
         }while(!mw.isSubmitted && (result == 0 || result == -1));
         
