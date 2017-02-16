@@ -1,31 +1,13 @@
 package facewordaddaccountapplication;
 
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
-public class FaceWordAddAccountApplication 
+public class FaceWordAddAccountApplication
 {
-    private static MainWindow mw;
-    
     public static void main(String[] args) 
     {
-        mw = new MainWindow();
-        int result = 0;
-        
-        do
-        {
-            if(mw.isSubmitted)
-            {
-                result = JOptionPane.showOptionDialog(mw, "Taco", "Confrim", 0, 0, null, args, args);
-            }
-        }while(!mw.isSubmitted && (result == 0 || result == -1));
-        
-        mw.dispatchEvent(new WindowEvent(mw, WindowEvent.WINDOW_CLOSING));
+        ApplicationController ac = new ApplicationController();
     }
-    
-    public static void WaitForSubmit()
-    {
-        while(!mw.isSubmitted);
-    }
-    
 }
