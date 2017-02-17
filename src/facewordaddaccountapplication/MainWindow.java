@@ -2,10 +2,16 @@ package facewordaddaccountapplication;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class MainWindow extends javax.swing.JFrame
-{
+{   
     public MainWindow(ApplicationController parent)
     {
         initComponents();
@@ -13,11 +19,54 @@ public class MainWindow extends javax.swing.JFrame
         this.setVisible(true);
         this.setResizable(false);
         this.submitButton.addActionListener(parent);
-        
-        // TODO:
-            // Add FaceWord icon to application title bar.
+        this.PopulateComboBoxOptions();
+        this.urlField.setVisible(false);
+        this.urlLabel.setVisible(false);
+        this.fileExitMenuItem.addActionListener(new ExitApp());
+        this.helpContentsMenuItem.addActionListener(new OpenHelp());
     }
-
+    
+    public void PopulateComboBoxOptions()
+    {
+        try 
+        {
+            DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = domFactory.newDocumentBuilder();
+            Document dDoc = builder.parse("src/XML/Websites.xml");
+            NodeList names = dDoc.getElementsByTagName("Name");
+            for(int i = 0; i < names.getLength(); i++)
+            {
+                Element e = (Element)names.item(i);
+                this.accountComboBox.addItem(((Element)names.item(i)).getFirstChild().getTextContent().trim());
+            }
+        } 
+        catch (Exception ex) 
+        {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+                
+    public String GetUrl()
+    {
+        if(this.accountComboBox.getSelectedIndex() == this.accountComboBox.getItemCount()-1)
+        {
+            return this.urlField.getText();
+        }
+        else
+        {
+            return this.accountComboBox.getSelectedItem().toString();
+        }
+    }
+         
+    public String GetUsername()
+    {
+        return this.usernameField.getText();
+    }
+    
+    public String GetPassword()
+    {
+        return String.valueOf(this.passwordField.getPassword());
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -30,10 +79,19 @@ public class MainWindow extends javax.swing.JFrame
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         submitButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        fileExitMenuItem = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        helpContentsMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        accountComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        accountComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                accountComboBoxItemStateChanged(evt);
+            }
+        });
 
         accountLabel.setText("Select Accont");
 
@@ -44,6 +102,22 @@ public class MainWindow extends javax.swing.JFrame
         passwordLabel.setText("Password");
 
         submitButton.setText("Submit");
+
+        jMenu1.setText("File");
+
+        fileExitMenuItem.setText("Exit");
+        jMenu1.add(fileExitMenuItem);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Help");
+
+        helpContentsMenuItem.setText("Help Contents");
+        jMenu2.add(helpContentsMenuItem);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,7 +163,7 @@ public class MainWindow extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordLabel)
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(submitButton)
                 .addContainerGap())
         );
@@ -97,9 +171,28 @@ public class MainWindow extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void accountComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_accountComboBoxItemStateChanged
+
+       if(this.accountComboBox.getSelectedIndex() == this.accountComboBox.getItemCount()-1)
+       {
+           this.urlField.setVisible(true);
+           this.urlLabel.setVisible(true);
+       }
+       else
+       {
+           this.urlField.setVisible(false);
+           this.urlLabel.setVisible(false);
+       }
+    }//GEN-LAST:event_accountComboBoxItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> accountComboBox;
     private javax.swing.JLabel accountLabel;
+    private javax.swing.JMenuItem fileExitMenuItem;
+    private javax.swing.JMenuItem helpContentsMenuItem;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JButton submitButton;
@@ -109,4 +202,25 @@ public class MainWindow extends javax.swing.JFrame
     private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
 
+    
+}
+
+class ExitApp implements ActionListener
+{
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        System.exit(0);
+    }
+}
+
+class OpenHelp implements ActionListener
+{
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        HelpWindow hw = new HelpWindow();
+        hw.setVisible(true);
+    }
+    
 }

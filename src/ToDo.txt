@@ -1,0 +1,6 @@
+ToDo:
+1. Add FaceWord icon to application title bar.
+2. Figure out encryption problem. 
+    a. Need to encrypt password before storing in database.
+    b. Need to get unique ID from face
+    
