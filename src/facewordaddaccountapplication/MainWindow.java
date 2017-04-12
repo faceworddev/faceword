@@ -23,7 +23,6 @@ public class MainWindow extends javax.swing.JFrame
         this.urlField.setVisible(false);
         this.urlLabel.setVisible(false);
         this.fileExitMenuItem.addActionListener(new ExitApp());
-        this.helpContentsMenuItem.addActionListener(new OpenHelp());
     }
     
     public void PopulateComboBoxOptions()
@@ -102,6 +101,11 @@ public class MainWindow extends javax.swing.JFrame
         passwordLabel.setText("Password");
 
         submitButton.setText("Submit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitButtonActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -185,6 +189,10 @@ public class MainWindow extends javax.swing.JFrame
        }
     }//GEN-LAST:event_accountComboBoxItemStateChanged
 
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
+
+    }//GEN-LAST:event_submitButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> accountComboBox;
     private javax.swing.JLabel accountLabel;
@@ -212,15 +220,4 @@ class ExitApp implements ActionListener
     {
         System.exit(0);
     }
-}
-
-class OpenHelp implements ActionListener
-{
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        HelpWindow hw = new HelpWindow();
-        hw.setVisible(true);
-    }
-    
 }
